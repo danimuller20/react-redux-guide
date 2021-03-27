@@ -1,70 +1,346 @@
-# Getting Started with Create React App
+# Guia React Redux
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Abaixo o ciclo que seguiremos para implementar o redux na nossa aplicação:
+<a name="ciclo"></a>
+![ ](public/image/redux.png)
 
-## Available Scripts
+[link](https://itnext.io/integrating-semantic-ui-modal-with-redux-4df36abb755c) da imagem.
 
-In the project directory, you can run:
+Aqui vou fazer uma implementação sobre como utilizar o redux no react. Básicamente teremos um input que ao digitar algo as informações serão guardadas no estado e recuperadas através de um botão que ao ser clicado mostra a informação na tela. 
 
-### `yarn start`
+#Sumário
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+- 1 - [Para começar vamos criar o react app](#criar)
+- 2 - [Agora vamos instalar o redux](#instalar)
+- 3 - [Dentro da pasta src crie uma outra pasta chamada "redux" e dentro de redux crie outras três pastas, "actions", "reducers" e "store"](#pastas)
+- 4 - [O código da aplicação ficou assim](#app)
+- 5 - [Seguindo o ciclo](#seguindo)
+  - 5.1 - [Conforme o ciclo acima vamos começar pelas actions](#actions)
+  - 5.2 - [Seguindo o fluxo, agora partimos para o reducer](#reducer)
+  - [❗️Ponto de atenção❗️](#atenção)
+    - 5.2.1 - [Combinando reducers](#combinando)
+  - 5.3 - [Agora chegou a vez da store!](#store)
+- 6 - [Fazer com que tudo convese](#conversar)
+- 7 -[Agora vamos para a reta final...](#final)
+-  8 - [Clone do portifólio](#clone)
+#### 1 - Para começar vamos criar o react app <a name="criar"></a>
+No terminal escolha um diretório onde esse app ficará, em seguida digite o código no terminal:
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+````
+npx create-react-app nome-do-app
+````
 
-### `yarn test`
+Entre na pasta do app:
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+````
+cd nome-do-app
+````
+Para iniciar o projeto no browser:
+````
+npm start
+````
+Deverá "automágicamente" abrir uma aba no navegador e aparecer algo assim:
+![](public/image/capturaDeTela.png)
+#### 2 - Agora vamos instalar o redux <a name="instalar"></a>
 
-### `yarn build`
+Para instalar a biblioteca redux digite o seguinte código no terminal:
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+````
+npm install --save redux react-redux
+````
+"redux" é a biblioteca que possui a implementação do Redux.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+"react-redux" é a biblioteca oficial para realizar a conexão entre React e Redux.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+#### 3 - Dentro da pasta src crie uma outra pasta chamada "_redux_" e dentro de redux crie outras três pastas, "_actions_", "_reducers_" e "_store_" <a name="pastas"></a>
 
-### `yarn eject`
+Vamos ter algo assim:
+![ ](public/image/folders.png)
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+#### 4 - O código da aplicação ficou assim <a name="app"></a>
+src/App.js
+````
+import { Component } from 'react'
+import './App.css';
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+class App extends Component {
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+  render() {
+    return (
+      <section className="App-section">
+        <header>
+          React Redux
+        </header>
+        <label htmlFor="text-input">
+          <input name="text" id="text-input" type="text" />
+        </label>
+        <button type="button">Salvar</button> 
+      </section>
+    );
+  }
+}
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+export default App;
+````
+Aqui nada acontece, agora vamos partir para a implementação do redux!! :rocket:
+![ ](public/image/react.gif)
 
-## Learn More
+#### 5 - Seguindo o ciclo <a name="seguindo"></a>
+[Qualquer dúvida, reveja o ciclo!](#ciclo)
+##### 5.1 - Conforme o ciclo acima vamos começar pelas actions. <a name="actions"></a>
+Lembra daquela pasta **redux** que criamos? Então, lá dentro temos uma pasta chamada **actions**, nesse caso vamos criar um arquivo chamado "*inputActions.js*", lá vamos ter o seguinte código:
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+*src/redux/actions/inputActions.js*
+````
+const INPUT_CHANGE = 'INPUT_CHANGE';
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+const inputAction = (text) => ({
+  type: INPUT_CHANGE,
+  text,
+});
 
-### Code Splitting
+export default inputAction;
+````
+* Em uma constante declaramos a action;
+* Depois criamos uma função que retorna um objeto com o tipo (type) da action e o que essa action irá receber, no caso o texto (text) do input; <a name="lembra"></a>
+* Por fim exportamos essa função;
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+E pronto! A nossa action está feita. :pushpin: 
 
-### Analyzing the Bundle Size
+##### 5.2 - Seguindo o fluxo, agora partimos para o reducer <a name="reducer"></a>
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+Dentro da pasta **redux**, agora vamos utilizar a pasta **reducers**. Lá vamos criar um arquivo chamado *inputReducer.js* com o seguinte código: 
 
-### Making a Progressive Web App
+*src/redux/reducers/inputReducer.js*
+````
+const INPUT_CHANGE = 'INPUT_CHANGE';
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+const INITIAL_STATE = {
+  text: '',
+}
 
-### Advanced Configuration
+const inputreducer = (state = INITIAL_STATE, action) => {
+  switch (action.type) {
+    case INPUT_CHANGE:
+      return {
+        ...state,
+        text: action.text,
+      };
+    default:
+     return state;
+  }
+}
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+export default inputreducer;
+````
+* Novamente em uma constante declaramos a mesma action do arquivo anterior.
+* Criamos um estado inicial, onde esse estado sempre é um objeto, ele pode receber string (como é o nosso caso), mas também pode recebem array, objeto, boleano.
+* Depois temos uma função a qual verifica qual foi o tipo da ação efetuada, e ela atualiza o estado conforme descrevemos.
+* Por fim exportamos a função.
 
-### Deployment
+##### :exclamation:Ponto de atenção:exclamation: <a name="atenção"></a>
+O state é imutável. Portanto, devemos usar métodos que façam clonagem e não mutação do estado.
+Você pode se aprofundar um pouco mais [aqui](https://medium.com/aurum-tech/controlando-o-estado-de-aplica%C3%A7%C3%B5es-react-com-redux-e-optics-fa524d96488c).
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+###### 5.2.1 - Combinando reducers <a name="combinando"></a>
+Depois de criar os reducers é hora de unificar todos eles através do "*combineReducers*".
+Aqui podemos criar um arquivo "*index.js*".
 
-### `yarn build` fails to minify
+*src/redux/actions/index.js*
+````
+import { combineReducers } from 'redux';
+import inputreducer from './inputReducer'
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+const rootreducer = combineReducers({
+  inputreducer,
+});
+
+export default rootreducer;
+````
+* Aqui vamos importar o "*combineReducers*" da biblioteca "*redux*";
+* Importamos os reducers que criamos;
+* Atribuimos "*combineReducers*" a uma variável e ela recebe como parâmetro um objeto onde podemos colocar todos os reducers;
+* Por fim, exportamos o "*rootreducer*";
+
+Concluímos o reducer. :clap:
+
+OBS: se houvesse mais reducers o código ficaria assim:
+````
+import { combineReducers } from 'redux';
+import inputreducer from './inputReducer'
+import exempleReducer from './exempleReducer'
+
+const rootreducer = combineReducers({
+  inputreducer,
+  exempleReducer,
+});
+
+export default rootreducer;
+````
+
+##### 5.3 - Agora chegou a vez da store! <a name="store"></a>
+
+Agora o último mas não o menos importante, o **store**!
+
+Dentro da pasta store, vamos criar um arquivo *index.js* com o código:
+
+*src/redux/store/index.js*
+````
+import {createStore, compose } from 'redux';
+import rootreducer from '../reducers';
+
+const extension = window.devToolsExtension() || ((f) => f);
+
+const store = createStore(rootreducer, compose(extension));
+
+export default store;
+````
+* Primeiro importamos da biblioteca do redux a *createStore*;
+* Depois atribuimos essa função em uma variável chamda **store** (pode ser outro nome, mas por boa prática usamos store),
+* A função pode receber até dois parâmetros, a *rootReducer* onde estão concentrados todos os nossos stors e nesse caso o segundo parametro é para o funcionamento de uma extensão chamada [Redux DevTools](https://chrome.google.com/webstore/detail/redux-devtools/lmhkpmbekcpmknklioeibfkpmmfibljd?hl=pt-BR) disponível para o chorme.
+
+Um pouco de como ela funciona: :blush:
+![ ](public/image/reduxDevTools.gif)
+
+E terminamoooos!!! :boom:
+
+ops! inda não, mas falta pouco! :eyes:
+
+#### 6 - Fazer com que tudo convese. <a name="conversar"></a>
+
+Agora precisamos fazer com que o react converse com o redux, e para isso vamos precisar fazer algumas alterações no nosso *index.js* que é responsável por renderizar toda a nossa aplicação.
+
+*src/index.js*
+````
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { Provider } from 'react-redux';
+import store from './redux/store';
+import App from './App';
+
+ReactDOM.render(
+  <Provider store={ store }>
+    <App />
+  </Provider>,
+  document.getElementById('root')
+);
+````
+* Precisamos importar o *Provider*, da biblioteca "react redux" e a nossa *store* do diretório onde ela se encontra;
+* Básicamente o *Provider* que vai "prover" as informações do store;
+
+Aqui é somente isso!:pushpin:
+
+#### 7 - Agora vamos para a reta final... <a name="final"></a>
+
+Agora vamos ver tudo funcionando, no *App.js*:
+
+````
+import { Component } from 'react'
+import { connect } from 'react-redux';
+import inputAction from './redux/actions/inputActions'
+import './App.css';
+
+class App extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      shouldAppear: false
+    }
+    this.handleChange = this.handleChange.bind(this);
+    this.clickChange = this.clickChange.bind(this);
+  }
+
+  handleChange({ target }) {
+    const { inputChange } = this.props;
+    const {name, value } = target;
+    if(name === 'text') {
+      inputChange(value);
+      this.setState({
+        shouldAppear: false,
+      });
+    }
+  }
+
+  clickChange() {
+    this.setState({
+      shouldAppear: true,
+    });
+  }
+
+  render() {
+    const { shouldAppear } = this.state;
+    const { inputState} = this.props;
+    return (
+      <section className="App-section">
+        <header>
+          React Redux
+        </header>
+        <label htmlFor="text-input">
+          <input onChange={this.handleChange} name="text" id="text-input" type="text" />
+        </label>
+        <button onClick={() => this.clickChange()} type="button">Salvar</button> 
+        {shouldAppear && <p>{inputState}</p>} 
+      </section>
+    );
+  }
+}
+
+//Pegaremos as funções das actions
+const mapDispatchToProps = (dispatch) => ({
+  inputChange: (text) => dispatch(inputAction(text)),
+});
+
+//Pegamos o estado nos reducers
+const mapStateToProps = (state) => ({
+  inputState: state.inputreducer.text,
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
+````
+
+* Primeiro passo importar o **connect**
+* Importaremos também **inputAction** das actions, é a função que recebe como parmetro o texto do input, lembra? [Você pode rever aqui](#lembra)
+* Depois lá na ultima linha do código é onde "conectamos" tudo, o **connect** recebe dois parâmetros **mapStateToProps** que pega os estados no reducer. E o **mapDispatchToProps** que dispacha o que as funções (no caso a função que importamos da action) recebem no parâmentro para a action.
+* Criamos uma lógica para que a função receba o texto do input:
+````
+  handleChange({ target }) {
+    const { inputChange } = this.props;
+    const {name, value } = target;
+    if(name === 'text') {
+      inputChange(value);
+      this.setState({
+        shouldAppear: false,
+      });
+    }
+  }
+````
+essa lógica conversa com o input:
+````
+  <label htmlFor="text-input">
+          <input onChange={this.handleChange} name="text" id="text-input" type="text" />
+        </label>
+````
+
+* Tem outra lógica que faz com que o texto apareca ao clicarmos no botão, envolvendo apenas lógica que se aplica ao react.
+
+Aqui a aplicação finalizada:
+![](public/image/olaRedux.gif)
+
+E agora acabamos de verdde!!!:heart_eyes:
+
+:rocket::rocket::rocket::rocket::rocket::rocket::rocket::rocket::rocket::rocket::rocket::rocket::rocket::rocket::rocket::rocket::rocket::rocket::rocket::rocket::rocket::rocket::rocket::rocket:
+
+#### 8 - Clone do portifólio. <a name="clone"></a>
+
+Caso você faça o clone do portifólio, após clonar, no terminal entre na pasta do projeto e instale as dependências necessárias digitanto:
+
+````
+npm install
+````
+Para abrir o projeto no browser:
+
+````
+npm start
+````
+
+ Sei que foi algo bem simples, mas foi mesmo para tentar passar o conceito básico do redux, espero que eu tenha conseguido ajudar de alguma forma.:smile:
