@@ -26,28 +26,28 @@ Aqui vamos fazer uma implementação sobre como utilizar o redux no react. Basic
 #### 1 - Para começar vamos criar o react app <a name="criar"></a>
 No terminal escolha um diretório onde esse app ficará, em seguida digite o código no terminal:
 
-````
+```sh
 npx create-react-app nome-do-app
-````
+```
 
 Entre na pasta do app:
 
-````
+```sh
 cd nome-do-app
-````
+```
 Para iniciar o projeto no browser:
-````
+```sh
 npm start
-````
+```
 Deverá "automágicamente" abrir uma aba no navegador e aparecer algo assim:
 ![](public/image/capturaDeTela.png)
 #### 2 - Agora vamos instalar o redux <a name="instalar"></a>
 
 Para instalar a biblioteca redux digite o seguinte código no terminal:
 
-````
+```sh
 npm install --save redux react-redux
-````
+```
 "redux" é a biblioteca que possui a implementação do Redux.
 
 "react-redux" é a biblioteca oficial para realizar a conexão entre React e Redux.
@@ -59,7 +59,7 @@ Vamos ter algo assim:
 
 #### 4 - O código da aplicação ficou assim <a name="app"></a>
 src/App.js
-````
+```javaScript
 import { Component } from 'react'
 import './App.css';
 
@@ -81,7 +81,7 @@ class App extends Component {
 }
 
 export default App;
-````
+```
 Aqui nada acontece, agora vamos partir para a implementação do redux!! :rocket:
 ![ ](public/image/react.gif)
 
@@ -91,7 +91,7 @@ Aqui nada acontece, agora vamos partir para a implementação do redux!! :rocket
 Lembra daquela pasta **redux** que criamos? Então, lá dentro temos uma pasta chamada **actions**, nesse caso vamos criar um arquivo chamado "*inputActions.js*", lá vamos ter o seguinte código:
 
 *src/redux/actions/inputActions.js*
-````
+```javaScript
 const INPUT_CHANGE = 'INPUT_CHANGE';
 
 const inputAction = (text) => ({
@@ -100,7 +100,7 @@ const inputAction = (text) => ({
 });
 
 export default inputAction;
-````
+```
 * Em uma constante declaramos a action;
 * Depois criamos uma função que retorna um objeto com o tipo (type) da action e o que essa action irá receber, no caso o texto (text) do input; <a name="lembra"></a>
 * Por fim exportamos essa função;
@@ -112,7 +112,7 @@ E pronto! A nossa action está feita. :pushpin:
 Dentro da pasta **redux**, agora vamos utilizar a pasta **reducers**. Lá vamos criar um arquivo chamado *inputReducer.js* com o seguinte código: 
 
 *src/redux/reducers/inputReducer.js*
-````
+```javaScript
 const INPUT_CHANGE = 'INPUT_CHANGE';
 
 const INITIAL_STATE = {
@@ -132,7 +132,7 @@ const inputreducer = (state = INITIAL_STATE, action) => {
 }
 
 export default inputreducer;
-````
+```
 * Novamente em uma constante declaramos a mesma action do arquivo anterior.
 * Criamos um estado inicial, onde esse estado sempre é um objeto, ele pode receber string (como é o nosso caso), mas também pode recebem array, objeto, boleano.
 * Depois temos uma função a qual verifica qual foi o tipo da ação efetuada, e ela atualiza o estado conforme descrevemos.
@@ -146,8 +146,8 @@ Você pode se aprofundar um pouco mais [aqui](https://medium.com/aurum-tech/cont
 Depois de criar os reducers é hora de unificar todos eles através do "*combineReducers*".
 Aqui podemos criar um arquivo "*index.js*".
 
-*src/redux/actions/index.js*
-````
+*src/redux/reducers/index.js*
+```javaScript
 import { combineReducers } from 'redux';
 import inputreducer from './inputReducer'
 
@@ -156,7 +156,7 @@ const rootreducer = combineReducers({
 });
 
 export default rootreducer;
-````
+```
 * Aqui vamos importar o "*combineReducers*" da biblioteca "*redux*";
 * Importamos os reducers que criamos;
 * Atribuímos "*combineReducers*" a uma variável e ela recebe como parâmetro um objeto onde podemos colocar todos os reducers;
@@ -165,7 +165,7 @@ export default rootreducer;
 Concluímos o reducer. :clap:
 
 OBS: se houvesse mais reducers o código ficaria assim:
-````
+```javaScript
 import { combineReducers } from 'redux';
 import inputreducer from './inputReducer'
 import exempleReducer from './exempleReducer'
@@ -176,8 +176,7 @@ const rootreducer = combineReducers({
 });
 
 export default rootreducer;
-````
-
+```
 ##### 5.3 - Agora chegou a vez da store! <a name="store"></a>
 
 Agora o último mas não o menos importante, o **store**!
@@ -185,7 +184,7 @@ Agora o último mas não o menos importante, o **store**!
 Dentro da pasta store, vamos criar um arquivo *index.js* com o código:
 
 *src/redux/store/index.js*
-````
+```javaScript
 import {createStore, compose } from 'redux';
 import rootreducer from '../reducers';
 
@@ -194,7 +193,7 @@ const extension = window.devToolsExtension() || ((f) => f);
 const store = createStore(rootreducer, compose(extension));
 
 export default store;
-````
+```
 * Primeiro importamos da biblioteca do redux a *createStore*;
 * Depois atribuimos essa função em uma variável chamada **store** (pode ser outro nome, mas por boa prática usamos store),
 * A função pode receber até dois parâmetros, a *rootReducer* onde estão concentrados todos os nossos stors e nesse caso o segundo parâmetro é para o funcionamento de uma extensão chamada [Redux DevTools](https://chrome.google.com/webstore/detail/redux-devtools/lmhkpmbekcpmknklioeibfkpmmfibljd?hl=pt-BR) disponível para o chorme.
@@ -211,7 +210,7 @@ ops! inda não, mas falta pouco! :eyes:
 Agora precisamos fazer com que o react converse com o redux, e para isso vamos precisar fazer algumas alterações no nosso *index.js* que é responsável por renderizar toda a nossa aplicação.
 
 *src/index.js*
-````
+```javaScript
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
@@ -224,7 +223,7 @@ ReactDOM.render(
   </Provider>,
   document.getElementById('root')
 );
-````
+```
 * Precisamos importar o *Provider*, da biblioteca "react redux" e a nossa *store* do diretório onde ela se encontra;
 * Basicamente o *Provider* que vai "prover" as informações do store;
 
@@ -234,7 +233,7 @@ Aqui é somente isso!:pushpin:
 
 Agora vamos ver tudo funcionando, no *App.js*:
 
-````
+```javaScript
 import { Component } from 'react'
 import { connect } from 'react-redux';
 import inputAction from './redux/actions/inputActions'
@@ -296,13 +295,13 @@ const mapStateToProps = (state) => ({
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);
-````
+```
 
 * Primeiro passo importar o **connect**
 * Importaremos também **inputAction** das actions, é a função que recebe como parâmetro o texto do input, lembra? [Você pode rever aqui](#lembra)
 * Depois lá na ultima linha do código é onde "conectamos" tudo, o **connect** recebe dois parâmetros **mapStateToProps** que pega os estados no reducer. E o **mapDispatchToProps** que despacha o que as funções (no caso a função que importamos da action) recebem no parâmetro para a action.
 * Criamos uma lógica para que a função receba o texto do input:
-````
+```javaScript
   handleChange({ target }) {
     const { inputChange } = this.props;
     const {name, value } = target;
@@ -313,13 +312,13 @@ export default connect(mapStateToProps, mapDispatchToProps)(App);
       });
     }
   }
-````
+```
 essa lógica conversa com o input:
-````
+```javaScript
   <label htmlFor="text-input">
           <input onChange={this.handleChange} name="text" id="text-input" type="text" />
         </label>
-````
+```
 
 * Tem outra lógica que faz com que o texto apareça ao clicarmos no botão, envolvendo apenas lógica que se aplica ao react.
 
@@ -334,13 +333,13 @@ E agora acabamos de verdade!!!:heart_eyes:
 
 Caso você faça o clone do portfólio, após clonar, no terminal entre na pasta do projeto e instale as dependências necessárias digitando:
 
-````
+```sh
 npm install
-````
+```
 Para abrir o projeto no browser:
 
-````
+```sh
 npm start
-````
+```
 
  Sei que foi algo bem simples, mas foi mesmo para tentar passar o conceito básico do redux, espero que eu tenha conseguido ajudar de alguma forma.:smile:
