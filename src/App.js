@@ -36,7 +36,7 @@ class App extends Component {
     return (
       <section className="App-section">
         <header>
-          React Redux
+          <h1>React Redux</h1>
         </header>
         <label htmlFor="text-input">
           <input onChange={this.handleChange} name="text" id="text-input" type="text" />

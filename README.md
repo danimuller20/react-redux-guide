@@ -8,7 +8,7 @@ Abaixo o ciclo que seguiremos para implementar o redux na nossa aplicação:
 
 Aqui vou fazer uma implementação sobre como utilizar o redux no react. Básicamente teremos um input que ao digitar algo as informações serão guardadas no estado e recuperadas através de um botão que ao ser clicado mostra a informação na tela. 
 
-#Sumário
+# Sumário
 
 - 1 - [Para começar vamos criar o react app](#criar)
 - 2 - [Agora vamos instalar o redux](#instalar)
@@ -69,7 +69,7 @@ class App extends Component {
     return (
       <section className="App-section">
         <header>
-          React Redux
+          <h1>React Redux</h1>
         </header>
         <label htmlFor="text-input">
           <input name="text" id="text-input" type="text" />
@@ -196,7 +196,7 @@ const store = createStore(rootreducer, compose(extension));
 export default store;
 ````
 * Primeiro importamos da biblioteca do redux a *createStore*;
-* Depois atribuimos essa função em uma variável chamda **store** (pode ser outro nome, mas por boa prática usamos store),
+* Depois atribuimos essa função em uma variável chamada **store** (pode ser outro nome, mas por boa prática usamos store),
 * A função pode receber até dois parâmetros, a *rootReducer* onde estão concentrados todos os nossos stors e nesse caso o segundo parametro é para o funcionamento de uma extensão chamada [Redux DevTools](https://chrome.google.com/webstore/detail/redux-devtools/lmhkpmbekcpmknklioeibfkpmmfibljd?hl=pt-BR) disponível para o chorme.
 
 Um pouco de como ela funciona: :blush:
@@ -273,7 +273,7 @@ class App extends Component {
     return (
       <section className="App-section">
         <header>
-          React Redux
+          <h1>React Redux</h1>
         </header>
         <label htmlFor="text-input">
           <input onChange={this.handleChange} name="text" id="text-input" type="text" />
