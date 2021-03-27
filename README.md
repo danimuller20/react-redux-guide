@@ -1,4 +1,4 @@
-# Guia React Redux
+# Guia de como utilizar o React no Redux
 
 Abaixo o ciclo que seguiremos para implementar o redux na nossa aplicação:
 <a name="ciclo"></a>
@@ -6,7 +6,7 @@ Abaixo o ciclo que seguiremos para implementar o redux na nossa aplicação:
 
 [link](https://itnext.io/integrating-semantic-ui-modal-with-redux-4df36abb755c) da imagem.
 
-Aqui vou fazer uma implementação sobre como utilizar o redux no react. Básicamente teremos um input que ao digitar algo as informações serão guardadas no estado e recuperadas através de um botão que ao ser clicado mostra a informação na tela. 
+Aqui vamos fazer uma implementação sobre como utilizar o redux no react. Basicamente teremos um input que ao digitar algo as informações serão guardadas no estado e recuperadas através de um botão que ao ser clicado mostra a informação na tela. 
 
 # Sumário
 
@@ -159,7 +159,7 @@ export default rootreducer;
 ````
 * Aqui vamos importar o "*combineReducers*" da biblioteca "*redux*";
 * Importamos os reducers que criamos;
-* Atribuimos "*combineReducers*" a uma variável e ela recebe como parâmetro um objeto onde podemos colocar todos os reducers;
+* Atribuímos "*combineReducers*" a uma variável e ela recebe como parâmetro um objeto onde podemos colocar todos os reducers;
 * Por fim, exportamos o "*rootreducer*";
 
 Concluímos o reducer. :clap:
@@ -197,7 +197,7 @@ export default store;
 ````
 * Primeiro importamos da biblioteca do redux a *createStore*;
 * Depois atribuimos essa função em uma variável chamada **store** (pode ser outro nome, mas por boa prática usamos store),
-* A função pode receber até dois parâmetros, a *rootReducer* onde estão concentrados todos os nossos stors e nesse caso o segundo parametro é para o funcionamento de uma extensão chamada [Redux DevTools](https://chrome.google.com/webstore/detail/redux-devtools/lmhkpmbekcpmknklioeibfkpmmfibljd?hl=pt-BR) disponível para o chorme.
+* A função pode receber até dois parâmetros, a *rootReducer* onde estão concentrados todos os nossos stors e nesse caso o segundo parâmetro é para o funcionamento de uma extensão chamada [Redux DevTools](https://chrome.google.com/webstore/detail/redux-devtools/lmhkpmbekcpmknklioeibfkpmmfibljd?hl=pt-BR) disponível para o chorme.
 
 Um pouco de como ela funciona: :blush:
 ![ ](public/image/reduxDevTools.gif)
@@ -206,7 +206,7 @@ E terminamoooos!!! :boom:
 
 ops! inda não, mas falta pouco! :eyes:
 
-#### 6 - Fazer com que tudo convese. <a name="conversar"></a>
+#### 6 - Fazer com que tudo converse. <a name="conversar"></a>
 
 Agora precisamos fazer com que o react converse com o redux, e para isso vamos precisar fazer algumas alterações no nosso *index.js* que é responsável por renderizar toda a nossa aplicação.
 
@@ -226,7 +226,7 @@ ReactDOM.render(
 );
 ````
 * Precisamos importar o *Provider*, da biblioteca "react redux" e a nossa *store* do diretório onde ela se encontra;
-* Básicamente o *Provider* que vai "prover" as informações do store;
+* Basicamente o *Provider* que vai "prover" as informações do store;
 
 Aqui é somente isso!:pushpin:
 
@@ -299,8 +299,8 @@ export default connect(mapStateToProps, mapDispatchToProps)(App);
 ````
 
 * Primeiro passo importar o **connect**
-* Importaremos também **inputAction** das actions, é a função que recebe como parmetro o texto do input, lembra? [Você pode rever aqui](#lembra)
-* Depois lá na ultima linha do código é onde "conectamos" tudo, o **connect** recebe dois parâmetros **mapStateToProps** que pega os estados no reducer. E o **mapDispatchToProps** que dispacha o que as funções (no caso a função que importamos da action) recebem no parâmentro para a action.
+* Importaremos também **inputAction** das actions, é a função que recebe como parâmetro o texto do input, lembra? [Você pode rever aqui](#lembra)
+* Depois lá na ultima linha do código é onde "conectamos" tudo, o **connect** recebe dois parâmetros **mapStateToProps** que pega os estados no reducer. E o **mapDispatchToProps** que despacha o que as funções (no caso a função que importamos da action) recebem no parâmetro para a action.
 * Criamos uma lógica para que a função receba o texto do input:
 ````
   handleChange({ target }) {
@@ -321,18 +321,18 @@ essa lógica conversa com o input:
         </label>
 ````
 
-* Tem outra lógica que faz com que o texto apareca ao clicarmos no botão, envolvendo apenas lógica que se aplica ao react.
+* Tem outra lógica que faz com que o texto apareça ao clicarmos no botão, envolvendo apenas lógica que se aplica ao react.
 
 Aqui a aplicação finalizada:
 ![](public/image/olaRedux.gif)
 
-E agora acabamos de verdde!!!:heart_eyes:
+E agora acabamos de verdade!!!:heart_eyes:
 
 :rocket::rocket::rocket::rocket::rocket::rocket::rocket::rocket::rocket::rocket::rocket::rocket::rocket::rocket::rocket::rocket::rocket::rocket::rocket::rocket::rocket::rocket::rocket::rocket:
 
-#### 8 - Clone do portifólio. <a name="clone"></a>
+#### 8 - Clone do portfólio. <a name="clone"></a>
 
-Caso você faça o clone do portifólio, após clonar, no terminal entre na pasta do projeto e instale as dependências necessárias digitanto:
+Caso você faça o clone do portfólio, após clonar, no terminal entre na pasta do projeto e instale as dependências necessárias digitando:
 
 ````
 npm install
