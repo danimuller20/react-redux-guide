@@ -185,12 +185,14 @@ Dentro da pasta store, vamos criar um arquivo *index.js* com o código:
 
 *src/redux/store/index.js*
 ```javaScript
-import {createStore, compose } from 'redux';
+import {createStore } from 'redux';
 import rootreducer from '../reducers';
 
-const extension = window.devToolsExtension() || ((f) => f);
 
-const store = createStore(rootreducer, compose(extension));
+const store = createStore(
+  rootReducer,
+   window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+  );
 
 export default store;
 ```
